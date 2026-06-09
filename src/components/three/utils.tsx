@@ -115,11 +115,16 @@ export function Effects({
   bloom = 0.8,
   vignette = false,
   grain = false,
+  vignetteDarkness = 0.78,
 }: {
   bloom?: number;
   vignette?: boolean;
   grain?: boolean;
+  vignetteDarkness?: number;
 }) {
+  // NOTE: keep the pass list STABLE across renders. Toggling a pass in/out at
+  // runtime (e.g. on theme change) forces the EffectComposer to rebuild and can
+  // crash mid-rebuild on a lost context — vary numeric props instead.
   const passes = [
     <Bloom
       key="bloom"
@@ -131,7 +136,9 @@ export function Effects({
     />,
   ];
   if (vignette)
-    passes.push(<Vignette key="vig" offset={0.28} darkness={0.78} eskil={false} />);
+    passes.push(
+      <Vignette key="vig" offset={0.28} darkness={vignetteDarkness} eskil={false} />
+    );
   if (grain)
     passes.push(
       <Noise key="noise" blendFunction={BlendFunction.OVERLAY} opacity={0.16} />

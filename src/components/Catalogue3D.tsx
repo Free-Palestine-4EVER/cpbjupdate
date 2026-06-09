@@ -1,10 +1,11 @@
 "use client";
 
-import { Suspense, useMemo, useRef, type MutableRefObject } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Suspense, useEffect, useMemo, useRef, type MutableRefObject } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, MeshReflectorMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { DustField, Effects, StudioEnv, useConcreteMaps } from "./three/utils";
+import { useTheme } from "@/lib/useTheme";
 
 type Prog = MutableRefObject<number>;
 
@@ -186,7 +187,7 @@ const ITEMS = [
   { Model: ManholeModel, label: "Manhole", angle: (Math.PI * 4) / 3 },
 ];
 
-function Carousel({ progress }: { progress: Prog }) {
+function Carousel({ progress, light }: { progress: Prog; light: boolean }) {
   const ring = useRef<THREE.Group>(null);
   const R = 2.5;
   useFrame((state, dt) => {
@@ -203,8 +204,9 @@ function Carousel({ progress }: { progress: Prog }) {
           <Html position={[0, 1.4, 0]} center distanceFactor={11} pointerEvents="none">
             <div style={{
               fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em",
-              textTransform: "uppercase", color: "#f3f1ec", whiteSpace: "nowrap",
-              border: "1px solid rgba(255,255,255,0.18)", background: "rgba(10,11,13,0.6)",
+              textTransform: "uppercase", color: light ? "#1a1c1f" : "#f3f1ec", whiteSpace: "nowrap",
+              border: light ? "1px solid rgba(26,23,18,0.16)" : "1px solid rgba(255,255,255,0.18)",
+              background: light ? "rgba(255,255,255,0.7)" : "rgba(10,11,13,0.6)",
               backdropFilter: "blur(6px)", padding: "5px 12px", borderRadius: 999,
             }}>
               <span style={{ color: "#ed5a1e" }}>◆</span>&nbsp;{label}
@@ -216,7 +218,18 @@ function Carousel({ progress }: { progress: Prog }) {
   );
 }
 
-function Floor({ c }: { c: ReturnType<typeof useConcreteMaps> }) {
+/** repaint the opaque scene background + fog when the theme flips */
+function Backdrop({ light }: { light: boolean }) {
+  const { scene } = useThree();
+  useEffect(() => {
+    const hex = light ? "#eceae3" : "#0a0b0d";
+    scene.background = new THREE.Color(hex);
+    scene.fog = new THREE.Fog(hex, 9, 17);
+  }, [light, scene]);
+  return null;
+}
+
+function Floor({ c, light }: { c: ReturnType<typeof useConcreteMaps>; light: boolean }) {
   const nor = useMemo(() => {
     const t = c.normalMap.clone();
     t.repeat.set(9, 9);
@@ -229,13 +242,13 @@ function Floor({ c }: { c: ReturnType<typeof useConcreteMaps> }) {
       <MeshReflectorMaterial
         resolution={1024}
         mirror={0.4}
-        mixStrength={1.6}
+        mixStrength={light ? 1.1 : 1.6}
         blur={[320, 90]}
         roughness={0.85}
         depthScale={1}
         minDepthThreshold={0.4}
         maxDepthThreshold={1.2}
-        color="#0d0f13"
+        color={light ? "#d7d2c6" : "#0d0f13"}
         metalness={0.25}
         normalMap={nor}
         normalScale={new THREE.Vector2(0.18, 0.18)}
@@ -244,17 +257,19 @@ function Floor({ c }: { c: ReturnType<typeof useConcreteMaps> }) {
   );
 }
 
-function Scene({ progress }: { progress: Prog }) {
+function Scene({ progress, light }: { progress: Prog; light: boolean }) {
   const c = useConcreteMaps(2);
   return (
     <>
-      <StudioEnv intensity={0.5} />
+      <Backdrop light={light} />
+      <StudioEnv intensity={light ? 0.85 : 0.5} />
+      {light && <ambientLight intensity={0.5} color="#fff7ee" />}
       <directionalLight position={[-5, 7, 5]} intensity={2.0} color="#fff2e2" />
       <pointLight position={[5, 3, 2]} intensity={34} color="#ed5a1e" distance={20} />
       <pointLight position={[-5, 1, -4]} intensity={16} color="#6fa4d6" distance={22} />
-      <Carousel progress={progress} />
-      <Floor c={c} />
-      <DustField count={240} radius={8} />
+      <Carousel progress={progress} light={light} />
+      <Floor c={c} light={light} />
+      <DustField count={240} radius={8} color={light ? "#8f8b7d" : "#d8d2c6"} />
     </>
   );
 }
@@ -266,21 +281,18 @@ export default function Catalogue3D({
   progress: Prog;
   active?: boolean;
 }) {
+  const light = useTheme();
   return (
     <Canvas
       dpr={[1, 1.9]}
       camera={{ position: [0, 1.6, 7.4], fov: 42 }}
       gl={{ antialias: true }}
       frameloop={active ? "always" : "never"}
-      onCreated={({ scene }) => {
-        scene.background = new THREE.Color("#0a0b0d");
-        scene.fog = new THREE.Fog("#0a0b0d", 9, 17);
-      }}
     >
       <Suspense fallback={null}>
-        <Scene progress={progress} />
+        <Scene progress={progress} light={light} />
       </Suspense>
-      <Effects bloom={1.0} vignette grain />
+      <Effects bloom={light ? 0.55 : 1.0} vignette grain vignetteDarkness={light ? 0.1 : 0.78} />
     </Canvas>
   );
 }

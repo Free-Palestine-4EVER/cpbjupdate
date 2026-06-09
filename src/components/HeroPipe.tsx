@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { DustField, Effects, StudioEnv, useConcreteMaps } from "./three/utils";
+import { useTheme } from "@/lib/useTheme";
 
 function Pipe() {
   const pose = useRef<THREE.Group>(null);
@@ -79,6 +80,7 @@ function Pipe() {
 }
 
 export default function HeroPipe({ active = true }: { active?: boolean }) {
+  const light = useTheme();
   return (
     <Canvas
       dpr={[1, 1.9]}
@@ -88,15 +90,16 @@ export default function HeroPipe({ active = true }: { active?: boolean }) {
       frameloop={active ? "always" : "never"}
     >
       <Suspense fallback={null}>
-        <StudioEnv intensity={0.55} />
+        <StudioEnv intensity={light ? 0.8 : 0.55} />
+        {light && <ambientLight intensity={0.45} color="#fff7ee" />}
         <directionalLight position={[-4, 5, 6]} intensity={2.1} color="#fff2e2" />
         <pointLight position={[1, 1, 5]} intensity={8} color="#ffe9d6" distance={20} />
         <pointLight position={[4, 2.5, 1.5]} intensity={24} color="#ed5a1e" distance={16} />
         <pointLight position={[-5, -2, -4]} intensity={9} color="#6fa4d6" distance={20} />
-        <DustField count={300} radius={7} />
+        <DustField count={300} radius={7} color={light ? "#9a988f" : "#d8d2c6"} />
         <Pipe />
       </Suspense>
-      <Effects bloom={0.85} />
+      <Effects bloom={light ? 0.5 : 0.85} />
     </Canvas>
   );
 }

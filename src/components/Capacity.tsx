@@ -19,7 +19,7 @@ export default function Capacity() {
         <div className="mt-8 flex flex-col items-start gap-6 lg:flex-row lg:items-end lg:justify-between">
           <Reveal variant="wipe">
             <div className="flex items-end gap-4">
-              <span className="numeral text-[clamp(4.5rem,17vw,12.5rem)] text-fg">
+              <span className="numeral text-[clamp(3.6rem,17vw,12.5rem)] text-fg">
                 <Counter to={3500} duration={2.2} />
               </span>
               <span className="mono mb-4 text-[0.9rem] uppercase tracking-[0.14em] text-ember md:mb-6">

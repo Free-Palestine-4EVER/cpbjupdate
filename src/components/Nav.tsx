@@ -36,7 +36,7 @@ export default function Nav() {
           initial={{ y: -24, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className={`flex w-full max-w-[1180px] items-center justify-between gap-4 rounded-full border px-3 py-2.5 transition-colors duration-500 ${
+          className={`flex w-full max-w-[1180px] items-center justify-between gap-2 rounded-full border px-2.5 py-2 transition-colors duration-500 sm:gap-4 sm:px-3 sm:py-2.5 ${
             scrolled
               ? "border-[var(--line-strong)] bg-bg/80 backdrop-blur-xl"
               : "border-[var(--line)] bg-bg/45 backdrop-blur-md"
@@ -69,9 +69,10 @@ export default function Nav() {
             </a>
             <a
               href="#contact"
-              className="btn-ember rounded-full px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em] mono"
+              className="btn-ember whitespace-nowrap rounded-full px-3 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.12em] mono sm:px-4 sm:text-[0.72rem] sm:tracking-[0.14em]"
             >
-              Request a Quote
+              <span className="sm:hidden">Quote</span>
+              <span className="hidden sm:inline">Request a Quote</span>
             </a>
             {/* mobile toggle */}
             <button

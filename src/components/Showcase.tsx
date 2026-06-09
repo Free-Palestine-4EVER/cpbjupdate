@@ -22,7 +22,7 @@ export default function Showcase() {
   const [visRef, visible] = useVisible<HTMLDivElement>("200px");
 
   return (
-    <section ref={ref} className="force-dark relative bg-bg" style={{ height: "280vh" }}>
+    <section ref={ref} className="force-dark relative h-[200vh] bg-bg md:h-[280vh]">
       <div ref={visRef} className="sticky top-0 h-screen w-full overflow-hidden">
         {/* 3D scene */}
         <div className="absolute inset-0">

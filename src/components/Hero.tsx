@@ -38,7 +38,7 @@ export default function Hero() {
       <div className="absolute inset-0 blueprint-grid opacity-[0.5]" />
       <div className="absolute inset-0 blueprint-grid-fine opacity-30 [mask-image:radial-gradient(60%_60%_at_70%_40%,black,transparent)]" />
       <div className="glow-ember pointer-events-none absolute right-[6%] top-[34%] h-[60vh] w-[60vh] opacity-70" />
-      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(120%_90%_at_50%_-10%,transparent,rgba(10,11,13,0.7)_75%)]" />
+      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(120%_90%_at_50%_-10%,transparent,var(--scrim)_75%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bg" />
 
       {/* 3D pipe */}
@@ -47,7 +47,7 @@ export default function Hero() {
         initial={{ opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.6, ease: EASE, delay: 0.2 }}
-        className="pointer-events-none absolute right-[-6%] top-0 h-full w-[58%] md:right-[-2%] md:w-[52%]"
+        className="pointer-events-none absolute right-[-14%] top-0 h-full w-[78%] opacity-90 sm:right-[-6%] sm:w-[58%] sm:opacity-100 md:right-[-2%] md:w-[52%]"
       >
         <HeroPipe active={pipeVisible} />
         {/* fade the canvas into the text on the left */}
@@ -66,7 +66,7 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="display max-w-[18ch] text-[clamp(2.9rem,9.2vw,7.6rem)] text-fg">
+          <h1 className="display max-w-[18ch] text-[clamp(2.5rem,9.2vw,7.6rem)] text-fg">
             <span className="block overflow-hidden">
               <motion.span variants={line} className="block">
                 The Foundation
@@ -148,7 +148,7 @@ export default function Hero() {
         <span className="mono text-[0.6rem] uppercase tracking-[0.3em] text-mute">
           Scroll
         </span>
-        <span className="relative h-9 w-px overflow-hidden bg-white/15">
+        <span className="relative h-9 w-px overflow-hidden bg-[var(--hairline-fg)]">
           <motion.span
             className="absolute inset-x-0 top-0 h-3 bg-ember"
             animate={{ y: [-12, 36] }}

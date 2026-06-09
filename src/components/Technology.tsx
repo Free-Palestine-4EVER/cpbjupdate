@@ -40,13 +40,13 @@ export default function Technology() {
             <RevealGroup stagger={0.06}>
               {/* header */}
               <div className="grid grid-cols-[1.2fr_1fr_1.1fr] border-b border-[var(--line-paper)] bg-[#eae7df]">
-                <div className="px-5 py-4 mono text-[0.62rem] uppercase tracking-[0.16em] text-mute-paper md:px-7">
+                <div className="px-3 py-4 mono text-[0.62rem] uppercase tracking-[0.16em] text-mute-paper md:px-7">
                   Metric
                 </div>
-                <div className="px-5 py-4 mono text-[0.62rem] uppercase tracking-[0.16em] text-mute-paper md:px-7">
+                <div className="px-3 py-4 mono text-[0.62rem] uppercase tracking-[0.16em] text-mute-paper md:px-7">
                   Traditional Wet Mix
                 </div>
-                <div className="flex items-center gap-2 border-l-2 border-ember bg-ember/[0.07] px-5 py-4 md:px-7">
+                <div className="flex items-center gap-2 border-l-2 border-ember bg-ember/[0.07] px-3 py-4 md:px-7">
                   <span className="h-1.5 w-1.5 rounded-full bg-ember" />
                   <span className="mono text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-ink">
                     JDCO Semi-Dry
@@ -60,13 +60,13 @@ export default function Technology() {
                   key={r.metric}
                   className="grid grid-cols-[1.2fr_1fr_1.1fr] border-b border-[var(--line-paper)] last:border-0"
                 >
-                  <div className="px-5 py-5 text-[0.95rem] font-semibold text-ink md:px-7">
+                  <div className="px-3 py-5 text-[0.95rem] font-semibold text-ink md:px-7">
                     {r.metric}
                   </div>
-                  <div className="px-5 py-5 text-[0.92rem] font-light text-mute-paper md:px-7">
+                  <div className="px-3 py-5 text-[0.92rem] font-light text-mute-paper md:px-7">
                     {r.traditional}
                   </div>
-                  <div className="flex items-center gap-2.5 border-l-2 border-ember bg-ember/[0.05] px-5 py-5 md:px-7">
+                  <div className="flex items-center gap-2.5 border-l-2 border-ember bg-ember/[0.05] px-3 py-5 md:px-7">
                     <svg
                       viewBox="0 0 16 16"
                       className="h-3.5 w-3.5 shrink-0 text-ember"

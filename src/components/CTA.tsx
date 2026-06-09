@@ -8,13 +8,13 @@ export default function CTA() {
   return (
     <section
       id="contact"
-      className="force-dark relative scroll-mt-24 overflow-hidden border-y border-[var(--line)] bg-bg py-28 md:py-40"
+      className="force-dark relative scroll-mt-24 overflow-hidden border-y border-[var(--line)] bg-bg py-24 md:py-40"
     >
       <div className="absolute inset-0 blueprint-grid opacity-40" />
       <div className="glow-ember pointer-events-none absolute left-1/2 top-1/2 h-[70vh] w-[90vw] -translate-x-1/2 -translate-y-1/2 opacity-50" />
       {/* faint stacked-pipe motif */}
       <svg
-        className="pointer-events-none absolute -bottom-10 right-[-4%] h-[360px] w-[360px] text-blueprint opacity-[0.12]"
+        className="pointer-events-none absolute -bottom-10 right-[-4%] h-[220px] w-[220px] text-blueprint opacity-[0.12] sm:h-[360px] sm:w-[360px]"
         viewBox="0 0 200 200"
         fill="none"
         stroke="currentColor"
