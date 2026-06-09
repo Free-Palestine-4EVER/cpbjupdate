@@ -45,7 +45,7 @@ export default function RootLayout({
       <body className="grain">
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('jdco-theme');if(t==='light')document.documentElement.classList.add('light');}catch(e){}})();`,
+            __html: `(function(){try{var p=new URLSearchParams(location.search).get('theme');var t=p||localStorage.getItem('jdco-theme');if(t==='light')document.documentElement.classList.add('light');else document.documentElement.classList.remove('light');}catch(e){}})();`,
           }}
         />
         <CursorGlow />

@@ -7,10 +7,12 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // re-apply saved theme after hydration (React resets <html> className on hydrate)
+    // re-apply theme after hydration (React resets <html> className on hydrate).
+    // a ?theme= query param wins per-tab so dark+light can be viewed side by side.
     let saved: string | null = null;
     try {
-      saved = localStorage.getItem("jdco-theme");
+      const p = new URLSearchParams(window.location.search).get("theme");
+      saved = p || localStorage.getItem("jdco-theme");
     } catch {}
     const isLight = saved === "light";
     document.documentElement.classList.toggle("light", isLight);
