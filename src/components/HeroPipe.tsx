@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { DustField, Effects, StudioEnv, useConcreteMaps } from "./three/utils";
 import { useTheme } from "@/lib/useTheme";
 
-function Pipe() {
+function Pipe({ scale = 0.96 }: { scale?: number }) {
   const pose = useRef<THREE.Group>(null);
   const spin = useRef<THREE.Group>(null);
   const scroll = useRef(0);
@@ -57,7 +57,7 @@ function Pipe() {
   });
 
   return (
-    <group ref={pose} rotation={[0.16, 0.62, 1.46]} scale={0.96} position={[0.2, 0, 0]}>
+    <group ref={pose} rotation={[0.16, 0.62, 1.46]} scale={scale} position={[0.2, 0, 0]}>
       <group ref={spin}>
         <mesh>
           <latheGeometry args={[profile, 220]} />
@@ -85,9 +85,12 @@ function Pipe() {
 
 export default function HeroPipe({ active = true }: { active?: boolean }) {
   const light = useTheme();
+  // client-only component (ssr:false) — read once at mount; phones get a
+  // smaller pipe, capped pixel ratio and fewer particles
+  const small = typeof window !== "undefined" && window.innerWidth < 640;
   return (
     <Canvas
-      dpr={[1, 1.9]}
+      dpr={small ? [1, 1.5] : [1, 1.9]}
       camera={{ position: [0, 0.2, 6], fov: 36 }}
       gl={{ antialias: true, alpha: true }}
       style={{ background: "transparent" }}
@@ -100,8 +103,8 @@ export default function HeroPipe({ active = true }: { active?: boolean }) {
         <pointLight position={[1, 1, 5]} intensity={8} color="#ffe9d6" distance={20} />
         <pointLight position={[4, 2.5, 1.5]} intensity={30} color="#fbcc0e" distance={16} />
         <pointLight position={[-5, -2, -4]} intensity={9} color="#c2a23c" distance={20} />
-        <DustField count={300} radius={7} color={light ? "#9a988f" : "#d8d2c6"} />
-        <Pipe />
+        <DustField count={small ? 140 : 300} radius={7} color={light ? "#9a988f" : "#d8d2c6"} />
+        <Pipe scale={small ? 0.78 : 0.96} />
       </Suspense>
       <Effects bloom={light ? 0.5 : 0.85} />
     </Canvas>

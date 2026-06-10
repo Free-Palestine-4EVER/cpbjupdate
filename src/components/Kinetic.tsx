@@ -42,6 +42,11 @@ export function KineticText({
   once?: boolean;
 }) {
   const units = buildUnits(children);
+  /* no IntersectionObserver (old in-app webviews) → skip the animation
+     entirely rather than leave the title invisible */
+  const hasIO =
+    typeof window === "undefined" || "IntersectionObserver" in window;
+  if (!hasIO) return createElement(Tag, { className }, children);
   /* IMPORTANT: the in-view observer must live on the UNCLIPPED wrapper.
      Observing the per-word spans never fires — they start translated 110%
      inside overflow-hidden clips, and IntersectionObserver respects

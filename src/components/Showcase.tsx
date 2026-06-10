@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { Kicker } from "./ui";
 import { Reveal } from "./Reveal";
+import SafeMount from "./SafeMount";
 import { useVisible } from "@/lib/useVisible";
 
 const Catalogue3D = dynamic(() => import("./Catalogue3D"), { ssr: false });
@@ -26,7 +27,9 @@ export default function Showcase() {
       <div ref={visRef} className="sticky top-0 h-screen w-full overflow-hidden">
         {/* 3D scene */}
         <div className="absolute inset-0">
-          <Catalogue3D progress={progress} active={visible} />
+          <SafeMount>
+            <Catalogue3D progress={progress} active={visible} />
+          </SafeMount>
         </div>
 
         {/* blend edges into neighboring sections */}

@@ -11,21 +11,36 @@ export default function Preloader() {
 
   useEffect(() => {
     setHydrated(true);
-    if (sessionStorage.getItem("jdco-preloaded")) {
+    // sessionStorage can THROW in private mode / in-app browsers (WhatsApp,
+    // Instagram). An uncaught throw here tears down the React tree and leaves
+    // the scroll lock on — visitor stuck on one screen. Never trust it.
+    let preloaded = false;
+    try {
+      preloaded = !!sessionStorage.getItem("jdco-preloaded");
+    } catch {}
+    if (preloaded) {
       setDone(true);
       return;
     }
     document.documentElement.style.overflow = "hidden";
+    // hard failsafe: whatever happens, the curtain lifts
+    const failsafe = setTimeout(() => setDone(true), 4500);
     const controls = animate(0, 100, {
       duration: 1.8,
       ease: [0.16, 1, 0.3, 1],
       onUpdate: (v) => setCount(Math.round(v)),
       onComplete: () => {
-        sessionStorage.setItem("jdco-preloaded", "1");
+        try {
+          sessionStorage.setItem("jdco-preloaded", "1");
+        } catch {}
         setTimeout(() => setDone(true), 380);
       },
     });
-    return () => controls.stop();
+    return () => {
+      controls.stop();
+      clearTimeout(failsafe);
+      document.documentElement.style.overflow = "";
+    };
   }, []);
 
   useEffect(() => {

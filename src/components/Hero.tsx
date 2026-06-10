@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { brand, heroStats } from "@/lib/content";
 import Magnetic from "./Magnetic";
+import SafeMount from "./SafeMount";
 import { useVisible } from "@/lib/useVisible";
 
 const HeroPipe = dynamic(() => import("./HeroPipe"), { ssr: false });
@@ -47,11 +48,14 @@ export default function Hero() {
         initial={{ opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.6, ease: EASE, delay: 0.2 }}
-        className="pointer-events-none absolute right-[-14%] top-0 h-full w-[78%] opacity-90 sm:right-[-6%] sm:w-[58%] sm:opacity-100 md:right-[-2%] md:w-[52%]"
+        className="pointer-events-none absolute right-[-12%] top-[4%] h-[62%] w-[58%] sm:right-[-6%] sm:top-0 sm:h-full sm:w-[58%] md:right-[-2%] md:w-[52%]"
       >
-        <HeroPipe active={pipeVisible} />
-        {/* fade the canvas into the text on the left */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg via-transparent to-transparent" />
+        <SafeMount>
+          <HeroPipe active={pipeVisible} />
+        </SafeMount>
+        {/* fade the canvas into the text on the left — desktop only; on mobile
+            this dark wash sat behind the buttons and swallowed the 3D */}
+        <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-bg via-transparent to-transparent sm:block" />
       </motion.div>
 
       {/* content */}
