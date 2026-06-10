@@ -111,6 +111,20 @@
   --hairline-fg: rgba(26, 23, 18, 0.14);
 }
 
+/* ---------- no-JS / slow-JS failsafe ----------
+   SSR ships every scroll-animated element at inline opacity:0 (140+ of them).
+   Until React actually hydrates (html.hydrated set in SmoothScroll), force
+   them visible — visitors on slow networks or failed JS must still get a
+   readable page, not a 90%-blank one. */
+html:not(.hydrated) [style*="opacity:0;"],
+html:not(.hydrated) [style*="opacity: 0;"],
+html:not(.hydrated) [style$="opacity:0"],
+html:not(.hydrated) [style$="opacity: 0"] {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+}
+
 * { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 /* clip (not hidden) keeps position:sticky working while killing any sideways
    leak from wide decorative elements (marquee, oversized motifs) on mobile. */
@@ -233,6 +247,7 @@ body {
 
 @keyframes floaty { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-8px);} }
 @keyframes pulse-soft { 0%,100% { opacity: 0.45;} 50% { opacity: 1;} }
+@keyframes slow-rot { to { transform: rotate(360deg); } }
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none; }

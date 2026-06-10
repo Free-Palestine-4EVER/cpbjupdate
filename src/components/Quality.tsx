@@ -94,8 +94,11 @@ export default function Quality() {
         {/* QMS stages */}
         <RevealGroup className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">
           {quality.stages.map((s) => (
-            <RevealItem key={s.n} className="bg-surface p-7">
-              <span className="mono text-[0.7rem] font-semibold text-ember">
+            <RevealItem
+              key={s.n}
+              className="group bg-surface p-7 transition-all duration-500 hover:-translate-y-1 hover:bg-surface-2"
+            >
+              <span className="mono inline-block text-[0.7rem] font-semibold text-ember transition-transform duration-500 group-hover:scale-125">
                 {s.n}
               </span>
               <h3 className="display mt-4 text-[1.12rem] font-bold text-fg">

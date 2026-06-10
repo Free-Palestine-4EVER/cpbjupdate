@@ -47,7 +47,7 @@ export default function Company() {
         {/* right — vision / mission / values */}
         <div className="flex flex-col gap-4">
           <Reveal>
-            <div className="ticks rounded-xl border border-[var(--line)] bg-surface p-7">
+            <div className="ticks rounded-xl border border-[var(--line)] bg-surface p-7 transition-all duration-500 hover:-translate-y-1 hover:border-[var(--line-strong)]">
               <div className="mono text-[0.62rem] uppercase tracking-[0.22em] text-ember">
                 Vision
               </div>
@@ -57,7 +57,7 @@ export default function Company() {
             </div>
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="ticks rounded-xl border border-[var(--line)] bg-surface p-7">
+            <div className="ticks rounded-xl border border-[var(--line)] bg-surface p-7 transition-all duration-500 hover:-translate-y-1 hover:border-[var(--line-strong)]">
               <div className="mono text-[0.62rem] uppercase tracking-[0.22em] text-ember">
                 Mission
               </div>
@@ -76,9 +76,9 @@ export default function Company() {
             {company.values.map((v) => (
               <RevealItem
                 key={v}
-                className="flex items-center gap-2 rounded-full border border-[var(--line)] bg-surface px-4 py-2"
+                className="flex items-center gap-2 rounded-full border border-[var(--line)] bg-surface px-4 py-2 transition-colors duration-300 hover:border-[var(--color-ember)]"
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-ember" />
+                <span className="h-1.5 w-1.5 rounded-full bg-ember [animation:pulse-soft_2.6s_ease-in-out_infinite]" />
                 <span className="text-[0.82rem] text-fg-soft">{v}</span>
               </RevealItem>
             ))}

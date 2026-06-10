@@ -1,12 +1,18 @@
+"use client";
+
 import { brand, nav } from "@/lib/content";
 import { Wordmark } from "./Logo";
+import { RevealGroup, RevealItem } from "./Reveal";
 
 export default function Footer() {
   return (
     <footer className="force-dark bg-bg pb-10 pt-20">
       <div className="shell">
-        <div className="grid gap-12 border-b border-[var(--line)] pb-14 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
+        <RevealGroup
+          className="grid gap-12 border-b border-[var(--line)] pb-14 md:grid-cols-[1.4fr_1fr_1fr]"
+          stagger={0.1}
+        >
+          <RevealItem>
             <span className="text-fg">
               <Wordmark />
             </span>
@@ -24,9 +30,9 @@ export default function Footer() {
                 </span>
               ))}
             </div>
-          </div>
+          </RevealItem>
 
-          <div>
+          <RevealItem>
             <div className="mono text-[0.6rem] uppercase tracking-[0.2em] text-steel">
               Navigate
             </div>
@@ -42,9 +48,9 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </RevealItem>
 
-          <div>
+          <RevealItem>
             <div className="mono text-[0.6rem] uppercase tracking-[0.2em] text-steel">
               Contact
             </div>
@@ -81,8 +87,8 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
-        </div>
+          </RevealItem>
+        </RevealGroup>
 
         <div className="flex flex-wrap gap-2 border-b border-[var(--line)] py-7">
           {brand.socials.map((s) => (

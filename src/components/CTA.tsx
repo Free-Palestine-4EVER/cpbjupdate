@@ -14,7 +14,7 @@ export default function CTA() {
       <div className="glow-ember pointer-events-none absolute left-1/2 top-1/2 h-[70vh] w-[90vw] -translate-x-1/2 -translate-y-1/2 opacity-50" />
       {/* faint stacked-pipe motif */}
       <svg
-        className="pointer-events-none absolute -bottom-10 right-[-4%] h-[220px] w-[220px] text-blueprint opacity-[0.12] sm:h-[360px] sm:w-[360px]"
+        className="pointer-events-none absolute -bottom-10 right-[-4%] h-[220px] w-[220px] text-blueprint opacity-[0.12] [animation:slow-rot_110s_linear_infinite] sm:h-[360px] sm:w-[360px]"
         viewBox="0 0 200 200"
         fill="none"
         stroke="currentColor"

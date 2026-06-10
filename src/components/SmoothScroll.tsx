@@ -9,6 +9,10 @@ export default function SmoothScroll({
   children: React.ReactNode;
 }) {
   useEffect(() => {
+    // hydration marker — releases the CSS failsafe that keeps all
+    // animation-hidden elements visible until React is actually running
+    document.documentElement.classList.add("hydrated");
+
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { technology } from "@/lib/content";
 import { SectionHead } from "./ui";
 import { Reveal, RevealGroup, RevealItem } from "./Reveal";
@@ -58,7 +59,7 @@ export default function Technology() {
               {technology.rows.map((r) => (
                 <RevealItem
                   key={r.metric}
-                  className="grid grid-cols-[1.2fr_1fr_1.1fr] border-b border-[var(--line-paper)] last:border-0"
+                  className="grid grid-cols-[1.2fr_1fr_1.1fr] border-b border-[var(--line-paper)] transition-colors duration-300 last:border-0 hover:bg-[#eeebe2]"
                 >
                   <div className="px-3 py-5 text-[0.95rem] font-semibold text-ink md:px-7">
                     {r.metric}
@@ -74,7 +75,13 @@ export default function Technology() {
                       stroke="currentColor"
                       strokeWidth="2"
                     >
-                      <path d="M3 8.5l3.5 3.5L13 4" />
+                      <motion.path
+                        d="M3 8.5l3.5 3.5L13 4"
+                        initial={{ pathLength: 0 }}
+                        whileInView={{ pathLength: 1 }}
+                        viewport={{ once: true, margin: "-15% 0px" }}
+                        transition={{ duration: 0.55, ease: "easeOut", delay: 0.25 }}
+                      />
                     </svg>
                     <span className="text-[0.92rem] font-medium text-ink">
                       {r.jdco}

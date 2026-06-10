@@ -52,7 +52,7 @@ export default function Impact() {
                 {impact.sectors.map((s) => (
                   <RevealItem
                     key={s}
-                    className="rounded-full border border-[var(--line)] bg-surface px-4 py-2 text-[0.84rem] text-fg-soft"
+                    className="rounded-full border border-[var(--line)] bg-surface px-4 py-2 text-[0.84rem] text-fg-soft transition-colors duration-300 hover:border-[var(--color-ember)] hover:text-fg"
                   >
                     {s}
                   </RevealItem>
@@ -66,9 +66,12 @@ export default function Impact() {
                 </div>
               </Reveal>
               <RevealGroup className="mt-4 flex flex-wrap gap-x-5 gap-y-2.5" stagger={0.03}>
-                {impact.reach.map((c) => (
+                {impact.reach.map((c, ci) => (
                   <RevealItem key={c} className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-ember/80" />
+                    <span
+                      className="h-1.5 w-1.5 rounded-full bg-ember/80 [animation:pulse-soft_2.8s_ease-in-out_infinite]"
+                      style={{ animationDelay: `${ci * 0.28}s` }}
+                    />
                     <span className="text-[0.92rem] text-mute">{c}</span>
                   </RevealItem>
                 ))}
@@ -88,7 +91,7 @@ export default function Impact() {
         <RevealGroup className="mt-8 grid gap-4 md:grid-cols-2" stagger={0.08}>
           {impact.projects.map((p, i) => (
             <RevealItem key={p.name}>
-              <article className="group relative overflow-hidden rounded-2xl border border-[var(--line)] bg-surface p-8 transition-colors duration-500 hover:border-[var(--line-strong)]">
+              <article className="group relative overflow-hidden rounded-2xl border border-[var(--line)] bg-surface p-8 transition-all duration-500 hover:-translate-y-1.5 hover:border-[var(--line-strong)] hover:bg-surface-2">
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="display text-[1.5rem] font-bold text-fg">
