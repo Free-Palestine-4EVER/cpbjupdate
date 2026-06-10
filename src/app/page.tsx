@@ -6,6 +6,7 @@ import Imperatives from "@/components/Imperatives";
 import Company from "@/components/Company";
 import Capacity from "@/components/Capacity";
 import Process from "@/components/Process";
+import Field from "@/components/Field";
 import Products from "@/components/Products";
 import Showcase from "@/components/Showcase";
 import Technology from "@/components/Technology";
@@ -27,6 +28,7 @@ export default function Home() {
       <Company />
       <Capacity />
       <Process />
+      <Field />
       <Products />
       <Showcase />
       <Technology />

@@ -65,10 +65,12 @@ export default function CTA() {
             </Magnetic>
             <Magnetic>
               <a
-                href="#top"
+                href={brand.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-ghost inline-block rounded-full px-8 py-4 text-[0.8rem] uppercase tracking-[0.14em] text-fg mono"
               >
-                Download Capability Profile
+                WhatsApp&nbsp;·&nbsp;{brand.mobile}
               </a>
             </Magnetic>
           </div>
@@ -77,19 +79,25 @@ export default function CTA() {
         <Reveal delay={0.24}>
           <div className="mx-auto mt-16 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--line)] md:grid-cols-4">
             {[
-              ["Email", brand.email],
-              ["Phone", brand.phone],
-              ["Location", brand.location],
-              ["Web", brand.web],
-            ].map(([k, v]) => (
-              <div key={k} className="bg-surface px-5 py-6 text-left">
-                <div className="mono text-[0.58rem] uppercase tracking-[0.18em] text-steel">
+              ["Email", brand.email, `mailto:${brand.email}`],
+              ["Phone", brand.phone, `tel:${brand.phone.replace(/\s/g, "")}`],
+              ["Location", brand.location, brand.maps],
+              ["Web", brand.web, `https://${brand.web}`],
+            ].map(([k, v, href]) => (
+              <a
+                key={k}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="group bg-surface px-5 py-6 text-left transition-colors hover:bg-surface-2"
+              >
+                <div className="mono text-[0.58rem] uppercase tracking-[0.18em] text-steel transition-colors group-hover:text-ember">
                   {k}
                 </div>
                 <div className="mt-2 text-[0.86rem] text-fg-soft break-words">
                   {v}
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </Reveal>

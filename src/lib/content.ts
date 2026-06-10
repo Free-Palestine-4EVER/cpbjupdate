@@ -8,12 +8,21 @@ export const brand = {
   short: "JDCO",
   legal: "Al-Jazirah Development Factory for Concrete Products",
   tagline: "The Foundation of Tomorrow",
-  location: "Riyadh, Saudi Arabia",
+  location: "Othman bin Affan, Riyadh, Saudi Arabia",
   established: "2007",
   ownership: "100% Saudi-owned",
-  email: "info@jdco.com.sa",
-  phone: "+966 11 265 0000",
+  email: "jdco@jdco.com.sa",
+  phone: "+966 11 222 6656",
+  mobile: "+966 59 604 8049",
+  whatsapp: "https://wa.me/966596048049",
   web: "jdco.com.sa",
+  maps: "https://www.google.com/maps/search/?api=1&query=JDCO+Othman+bin+Affan+Riyadh",
+  socials: [
+    { label: "Instagram", handle: "@jdco_sa", href: "https://www.instagram.com/jdco_sa" },
+    { label: "X", handle: "@JDCO_SA", href: "https://x.com/JDCO_SA" },
+    { label: "LinkedIn", handle: "/jdcosa", href: "https://www.linkedin.com/company/jdcosa/" },
+    { label: "Facebook", handle: "JDCO", href: "https://www.facebook.com/profile.php?id=100094904658888" },
+  ],
 };
 
 export const nav = [
@@ -375,6 +384,12 @@ export const partners = {
   intro:
     "JDCO holds active approvals and deep partnerships with the Kingdom's most demanding ministries, municipalities and elite multinational contractors.",
   names: [
+    "AlUla",
+    "AMAALA",
+    "Red Sea Global",
+    "QIDDIYA",
+    "ROSHN",
+    "Diriyah — DGDA",
     "Ministry of Housing — NHC",
     "National Water Company",
     "MODON",

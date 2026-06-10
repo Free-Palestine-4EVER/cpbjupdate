@@ -12,26 +12,26 @@
      NOTE: declare --color-* DIRECTLY per scope. An indirection like
      --color-bg: var(--bg) computes once at :root and freezes, so local
      overrides (e.g. .force-dark) would not take effect. */
-  --color-bg: #0a0b0d;
-  --color-surface: #111318;
-  --color-surface-2: #171a20;
-  --color-fg: #f3f1ec;            /* primary text */
-  --color-fg-soft: #cfccc4;       /* secondary text */
+  --color-bg: #111111;
+  --color-surface: #1a1a1a;
+  --color-surface-2: #212121;
+  --color-fg: #f4f4f1;            /* primary text */
+  --color-fg-soft: #d0d0cc;       /* secondary text */
   --color-mute: #8b9099;          /* muted text */
   --color-steel: #565b62;         /* faint labels */
-  --color-ghost: #1c1f25;         /* decorative ghost numerals */
+  --color-ghost: #1f1f1f;         /* decorative ghost numerals */
 
   /* fixed "paper" island sections (always light) */
-  --color-ink: #16181b;
-  --color-paper: #eceae3;
-  --color-paper-2: #ded9cf;
-  --color-mute-paper: #6b675d;
+  --color-ink: #131313;
+  --color-paper: #f1f1f1;
+  --color-paper-2: #e1e1e1;
+  --color-mute-paper: #6a6a6a;
 
   /* brand (constant across themes) */
-  --color-ember: #ed5a1e;
-  --color-ember-deep: #b23c12;
-  --color-blueprint: #6fa4d6;
-  --color-blueprint-bright: #a9d4f2;
+  --color-ember: #fbcc0e;
+  --color-ember-deep: #c79d06;
+  --color-blueprint: #c2a23c;
+  --color-blueprint-bright: #f7dd6f;
   --color-concrete: #9a988f;
 
   /* type */
@@ -50,23 +50,23 @@
   --gut: clamp(18px, 5vw, 64px);
   /* dark scrim used by cinematic overlays (vignettes, canvas fades).
      goes transparent in light mode so bands read fully white. */
-  --scrim: rgba(10, 11, 13, 0.7);
-  --scrim-soft: rgba(10, 11, 13, 0.55);
+  --scrim: rgba(17, 17, 17, 0.7);
+  --scrim-soft: rgba(17, 17, 17, 0.55);
   --hairline-fg: rgba(255, 255, 255, 0.15);
 }
 
 /* ---------- light theme ---------- */
 .light {
-  --color-bg: #f4f1ea;
+  --color-bg: #f1f1f1;
   --color-surface: #ffffff;
-  --color-surface-2: #efece2;
-  --color-fg: #1a1c1f;
-  --color-fg-soft: #45433c;
-  --color-mute: #6f6c62;
-  --color-steel: #8f8b7d;
-  --color-ghost: #e7e3d8;
-  --line: color-mix(in srgb, #1a1712 12%, transparent);
-  --line-strong: color-mix(in srgb, #1a1712 22%, transparent);
+  --color-surface-2: #e9e9e9;
+  --color-fg: #161616;
+  --color-fg-soft: #3a3a3a;
+  --color-mute: #6a6a6a;
+  --color-steel: #8c8c8c;
+  --color-ghost: #e5e5e5;
+  --line: color-mix(in srgb, #131313 12%, transparent);
+  --line-strong: color-mix(in srgb, #131313 22%, transparent);
   --grain: 0.03;
   --scrim: transparent;
   --scrim-soft: transparent;
@@ -77,34 +77,34 @@
    Dark by default (and re-asserted inside dark theme). In LIGHT mode the
    whole site — including the hero and every cinematic band — goes light. */
 .force-dark {
-  --color-bg: #0a0b0d;
-  --color-surface: #111318;
-  --color-surface-2: #171a20;
-  --color-fg: #f3f1ec;
-  --color-fg-soft: #cfccc4;
+  --color-bg: #111111;
+  --color-surface: #1a1a1a;
+  --color-surface-2: #212121;
+  --color-fg: #f4f4f1;
+  --color-fg-soft: #d0d0cc;
   --color-mute: #8b9099;
   --color-steel: #565b62;
-  --color-ghost: #1c1f25;
+  --color-ghost: #1f1f1f;
   --line: color-mix(in srgb, #ffffff 9%, transparent);
   --line-strong: color-mix(in srgb, #ffffff 16%, transparent);
   --grain: 0.05;
-  --scrim: rgba(10, 11, 13, 0.7);
-  --scrim-soft: rgba(10, 11, 13, 0.55);
+  --scrim: rgba(17, 17, 17, 0.7);
+  --scrim-soft: rgba(17, 17, 17, 0.55);
   --hairline-fg: rgba(255, 255, 255, 0.15);
 }
 
 /* light mode wins: cinematic bands inherit the light palette */
 .light .force-dark {
-  --color-bg: #f4f1ea;
+  --color-bg: #f1f1f1;
   --color-surface: #ffffff;
-  --color-surface-2: #efece2;
-  --color-fg: #1a1c1f;
-  --color-fg-soft: #45433c;
-  --color-mute: #6f6c62;
-  --color-steel: #8f8b7d;
-  --color-ghost: #e7e3d8;
-  --line: color-mix(in srgb, #1a1712 12%, transparent);
-  --line-strong: color-mix(in srgb, #1a1712 22%, transparent);
+  --color-surface-2: #e9e9e9;
+  --color-fg: #161616;
+  --color-fg-soft: #3a3a3a;
+  --color-mute: #6a6a6a;
+  --color-steel: #8c8c8c;
+  --color-ghost: #e5e5e5;
+  --line: color-mix(in srgb, #131313 12%, transparent);
+  --line-strong: color-mix(in srgb, #131313 22%, transparent);
   --grain: 0.03;
   --scrim: transparent;
   --scrim-soft: transparent;
@@ -129,7 +129,7 @@ body {
   transition: background-color 0.5s var(--ease-out-expo);
 }
 
-::selection { background: var(--color-ember); color: #0a0b0d; }
+::selection { background: var(--color-ember); color: #111111; }
 
 /* ---------- layout shell ---------- */
 .shell { width: 100%; max-width: var(--shell); margin-inline: auto; padding-inline: var(--gut); }
@@ -205,7 +205,7 @@ body {
 
 /* buttons */
 .btn-ember {
-  background: var(--color-ember); color: #0a0b0d;
+  background: var(--color-ember); color: #111111;
   transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo), background 0.3s;
   box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-ember) 60%, transparent);
 }
@@ -215,6 +215,16 @@ body {
 
 /* radial glow */
 .glow-ember { background: radial-gradient(60% 60% at 50% 50%, color-mix(in srgb, var(--color-ember) 26%, transparent), transparent 70%); }
+
+/* outlined display type on paper sections (kinetic name wall) */
+.text-outline-paper {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #4a463d;
+  transition: -webkit-text-stroke-color 0.3s, color 0.3s;
+}
+.text-outline-paper:hover {
+  -webkit-text-stroke-color: var(--color-ember);
+}
 
 /* marquee */
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }

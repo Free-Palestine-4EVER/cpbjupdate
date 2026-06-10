@@ -54,11 +54,51 @@ export default function Footer() {
                   {brand.email}
                 </a>
               </li>
-              <li>{brand.phone}</li>
+              <li>
+                <a href={`tel:${brand.phone.replace(/\s/g, "")}`} className="link-sweep hover:text-fg">
+                  {brand.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={brand.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-sweep hover:text-fg"
+                >
+                  {brand.mobile} · WhatsApp
+                </a>
+              </li>
               <li>{brand.location}</li>
-              <li className="text-ember">{brand.web}</li>
+              <li>
+                <a
+                  href={`https://${brand.web}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-sweep text-ember"
+                >
+                  {brand.web}
+                </a>
+              </li>
             </ul>
           </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 border-b border-[var(--line)] py-7">
+          {brand.socials.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mono group rounded-full border border-[var(--line)] px-4 py-2 text-[0.62rem] uppercase tracking-[0.14em] text-mute transition-colors hover:border-[var(--color-ember)] hover:text-fg"
+            >
+              {s.label}
+              <span className="ml-2 text-steel transition-colors group-hover:text-ember">
+                {s.handle}
+              </span>
+            </a>
+          ))}
         </div>
 
         <div className="flex flex-col items-start justify-between gap-3 pt-7 md:flex-row md:items-center">

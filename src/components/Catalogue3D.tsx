@@ -82,7 +82,7 @@ function PipeModel({ progress }: { progress: Prog }) {
       </mesh>
       <mesh scale={1.006}>
         <latheGeometry args={[profile, 36]} />
-        <meshBasicMaterial ref={wire} color="#7fb0e0" wireframe transparent opacity={0.5} side={THREE.DoubleSide} />
+        <meshBasicMaterial ref={wire} color="#e8c84a" wireframe transparent opacity={0.5} side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
@@ -133,7 +133,7 @@ function CulvertModel({ progress }: { progress: Prog }) {
         <ConcreteMat matRef={solid} c={c} />
       </mesh>
       <mesh geometry={geo} scale={1.01}>
-        <meshBasicMaterial ref={wire} color="#7fb0e0" wireframe transparent opacity={0.5} />
+        <meshBasicMaterial ref={wire} color="#e8c84a" wireframe transparent opacity={0.5} />
       </mesh>
     </group>
   );
@@ -175,7 +175,7 @@ function ManholeModel({ progress }: { progress: Prog }) {
       </mesh>
       <mesh scale={1.006}>
         <latheGeometry args={[profile, 30]} />
-        <meshBasicMaterial ref={wire} color="#7fb0e0" wireframe transparent opacity={0.5} side={THREE.DoubleSide} />
+        <meshBasicMaterial ref={wire} color="#e8c84a" wireframe transparent opacity={0.5} side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
@@ -204,12 +204,12 @@ function Carousel({ progress, light }: { progress: Prog; light: boolean }) {
           <Html position={[0, 1.4, 0]} center distanceFactor={11} pointerEvents="none">
             <div style={{
               fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em",
-              textTransform: "uppercase", color: light ? "#1a1c1f" : "#f3f1ec", whiteSpace: "nowrap",
+              textTransform: "uppercase", color: light ? "#161616" : "#f4f4f1", whiteSpace: "nowrap",
               border: light ? "1px solid rgba(26,23,18,0.16)" : "1px solid rgba(255,255,255,0.18)",
-              background: light ? "rgba(255,255,255,0.7)" : "rgba(10,11,13,0.6)",
+              background: light ? "rgba(255,255,255,0.7)" : "rgba(17,17,17,0.6)",
               backdropFilter: "blur(6px)", padding: "5px 12px", borderRadius: 999,
             }}>
-              <span style={{ color: "#ed5a1e" }}>◆</span>&nbsp;{label}
+              <span style={{ color: "#fbcc0e" }}>◆</span>&nbsp;{label}
             </div>
           </Html>
         </group>
@@ -222,7 +222,7 @@ function Carousel({ progress, light }: { progress: Prog; light: boolean }) {
 function Backdrop({ light }: { light: boolean }) {
   const { scene } = useThree();
   useEffect(() => {
-    const hex = light ? "#eceae3" : "#0a0b0d";
+    const hex = light ? "#f1f1f1" : "#111111";
     scene.background = new THREE.Color(hex);
     scene.fog = new THREE.Fog(hex, 9, 17);
   }, [light, scene]);
@@ -248,7 +248,7 @@ function Floor({ c, light }: { c: ReturnType<typeof useConcreteMaps>; light: boo
         depthScale={1}
         minDepthThreshold={0.4}
         maxDepthThreshold={1.2}
-        color={light ? "#d7d2c6" : "#0d0f13"}
+        color={light ? "#d7d2c6" : "#141414"}
         metalness={0.25}
         normalMap={nor}
         normalScale={new THREE.Vector2(0.18, 0.18)}
@@ -265,11 +265,11 @@ function Scene({ progress, light }: { progress: Prog; light: boolean }) {
       <StudioEnv intensity={light ? 0.85 : 0.5} />
       {light && <ambientLight intensity={0.5} color="#fff7ee" />}
       <directionalLight position={[-5, 7, 5]} intensity={2.0} color="#fff2e2" />
-      <pointLight position={[5, 3, 2]} intensity={34} color="#ed5a1e" distance={20} />
-      <pointLight position={[-5, 1, -4]} intensity={16} color="#6fa4d6" distance={22} />
+      <pointLight position={[5, 3, 2]} intensity={34} color="#fbcc0e" distance={20} />
+      <pointLight position={[-5, 1, -4]} intensity={16} color="#c2a23c" distance={22} />
       <Carousel progress={progress} light={light} />
       <Floor c={c} light={light} />
-      <DustField count={240} radius={8} color={light ? "#8f8b7d" : "#d8d2c6"} />
+      <DustField count={240} radius={8} color={light ? "#8c8c8c" : "#d8d2c6"} />
     </>
   );
 }

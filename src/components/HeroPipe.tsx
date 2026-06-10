@@ -41,19 +41,23 @@ function Pipe() {
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
     const s = scroll.current;
-    if (spin.current) spin.current.rotation.y += delta * 0.13;
+    if (spin.current) {
+      // steady turntable + a slow breathing wobble so the bore catches light
+      spin.current.rotation.y += delta * (0.5 + s * 0.6);
+      spin.current.rotation.x = Math.sin(t * 0.35) * 0.05;
+    }
     if (pose.current) {
-      const ty = 0.62 + state.pointer.x * 0.22 + Math.sin(t * 0.32) * 0.04 + s * 0.5;
-      const tx = 0.16 - state.pointer.y * 0.14 + s * 0.25;
+      const ty = 0.62 + state.pointer.x * 0.3 + Math.sin(t * 0.32) * 0.05 + s * 0.5;
+      const tx = 0.16 - state.pointer.y * 0.18 + s * 0.25;
       pose.current.rotation.y += (ty - pose.current.rotation.y) * 0.06;
       pose.current.rotation.x += (tx - pose.current.rotation.x) * 0.06;
-      pose.current.position.y = Math.sin(t * 0.5) * 0.05 - s * 0.6;
+      pose.current.position.y = Math.sin(t * 0.5) * 0.09 - s * 0.6;
       pose.current.position.x = 0.2 + s * 1.2;
     }
   });
 
   return (
-    <group ref={pose} rotation={[0.16, 0.62, 1.46]} scale={1.22} position={[0.2, 0, 0]}>
+    <group ref={pose} rotation={[0.16, 0.62, 1.46]} scale={0.96} position={[0.2, 0, 0]}>
       <group ref={spin}>
         <mesh>
           <latheGeometry args={[profile, 220]} />
@@ -72,7 +76,7 @@ function Pipe() {
         {/* glowing bore light at the far end (blooms) */}
         <mesh position={[0, -1.66, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <circleGeometry args={[0.74, 48]} />
-          <meshBasicMaterial color="#ff7a38" toneMapped={false} />
+          <meshBasicMaterial color="#ffd83d" toneMapped={false} />
         </mesh>
       </group>
     </group>
@@ -94,8 +98,8 @@ export default function HeroPipe({ active = true }: { active?: boolean }) {
         {light && <ambientLight intensity={0.45} color="#fff7ee" />}
         <directionalLight position={[-4, 5, 6]} intensity={2.1} color="#fff2e2" />
         <pointLight position={[1, 1, 5]} intensity={8} color="#ffe9d6" distance={20} />
-        <pointLight position={[4, 2.5, 1.5]} intensity={24} color="#ed5a1e" distance={16} />
-        <pointLight position={[-5, -2, -4]} intensity={9} color="#6fa4d6" distance={20} />
+        <pointLight position={[4, 2.5, 1.5]} intensity={30} color="#fbcc0e" distance={16} />
+        <pointLight position={[-5, -2, -4]} intensity={9} color="#c2a23c" distance={20} />
         <DustField count={300} radius={7} color={light ? "#9a988f" : "#d8d2c6"} />
         <Pipe />
       </Suspense>
