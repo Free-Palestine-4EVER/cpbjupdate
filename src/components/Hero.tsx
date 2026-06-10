@@ -101,6 +101,10 @@ export default function Hero() {
             <Magnetic>
               <a
                 href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.dispatchEvent(new CustomEvent("open-quote"));
+                }}
                 className="btn-ember inline-block rounded-full px-7 py-3.5 text-[0.78rem] font-semibold uppercase tracking-[0.14em] mono"
               >
                 Request a Quote

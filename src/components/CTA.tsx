@@ -58,6 +58,10 @@ export default function CTA() {
             <Magnetic>
               <a
                 href={`mailto:${brand.email}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.dispatchEvent(new CustomEvent("open-quote"));
+                }}
                 className="btn-ember inline-block rounded-full px-8 py-4 text-[0.8rem] font-semibold uppercase tracking-[0.14em] mono"
               >
                 Request a Quote

@@ -69,6 +69,10 @@ export default function Nav() {
             </a>
             <a
               href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                window.dispatchEvent(new CustomEvent("open-quote"));
+              }}
               className="btn-ember whitespace-nowrap rounded-full px-3 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.12em] mono sm:px-4 sm:text-[0.72rem] sm:tracking-[0.14em]"
             >
               <span className="sm:hidden">Quote</span>
