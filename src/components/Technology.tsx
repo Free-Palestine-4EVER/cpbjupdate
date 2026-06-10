@@ -1,168 +1,105 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useInView,
-  animate,
-} from "framer-motion";
+import { motion } from "framer-motion";
 import { technology } from "@/lib/content";
 import { SectionHead } from "./ui";
 import { Reveal } from "./Reveal";
 
-/* ============================================================
-   The Wipe — drag the gold blade to sweep between the two
-   manufacturing worlds. Identical metric rows sit in both layers,
-   so values literally swap under the blade as it crosses them.
-   ============================================================ */
+const EASE = [0.16, 1, 0.3, 1] as const;
+const HAS_IO = typeof window === "undefined" || "IntersectionObserver" in window;
 
-function MetricRows({ side }: { side: "wet" | "dry" }) {
-  const dry = side === "dry";
+/* one-line verdict per metric — the takeaway a procurement engineer scans for */
+const VERDICT = [
+  "−40% water",
+  "Rigid out of the mold",
+  "Instant mold turnover",
+  "Identical, every joint",
+  "3,500 tons / day",
+];
+
+function Row({
+  r,
+  i,
+}: {
+  r: (typeof technology.rows)[number];
+  i: number;
+}) {
   return (
-    <div className="mt-8 w-full md:mt-10">
-      {technology.rows.map((r, i) => (
-        <div
-          key={r.metric}
-          className={`grid grid-cols-[1fr_auto] items-baseline gap-4 border-t py-4 md:py-5 ${
-            dry ? "border-[#3a3414]" : "border-[var(--line-paper)]"
-          }`}
-        >
-          <div>
-            <div
-              className={`mono text-[0.56rem] uppercase tracking-[0.2em] ${
-                dry ? "text-[#b89a3e]" : "text-[#a39d8e]"
-              }`}
-            >
-              M-{String(i + 1).padStart(2, "0")} · {r.metric}
-            </div>
-            <div
-              className={`mt-1.5 text-[0.98rem] md:text-[1.05rem] ${
-                dry ? "font-semibold text-[#f4f4f1]" : "font-light text-mute-paper"
-              }`}
-            >
-              {dry ? r.jdco : r.traditional}
-            </div>
-          </div>
-          {dry ? (
-            <svg viewBox="0 0 16 16" className="h-4 w-4 text-ember" fill="none" stroke="currentColor" strokeWidth="2.2">
-              <path d="M3 8.5l3.5 3.5L13 4" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 text-[#a39d8e]" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M4 4l8 8M12 4l-8 8" />
-            </svg>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function PanelContent({ side }: { side: "wet" | "dry" }) {
-  const dry = side === "dry";
-  return (
-    <div className="flex h-full flex-col px-6 py-8 sm:px-10 md:px-14 md:py-12">
-      <div className="flex items-center gap-3">
-        <span className={`h-px w-7 ${dry ? "bg-ember" : "bg-[#a39d8e]"}`} />
-        <span
-          className={`mono text-[0.6rem] uppercase tracking-[0.24em] ${
-            dry ? "text-ember" : "text-[#8d8779]"
-          }`}
-        >
-          {dry ? "The JDCO Standard — Semi-Dry" : "Legacy Method — Wet Cast"}
-        </span>
-      </div>
-      <div
-        className={`display mt-4 text-[clamp(3rem,9vw,7rem)] leading-none ${
-          dry ? "text-[#f4f4f1]" : "text-[#7b766a]"
-        }`}
-      >
-        {dry ? (
-          <>
-            DRY<span className="text-ember">.</span>
-          </>
-        ) : (
-          "WET."
-        )}
-      </div>
-      <MetricRows side={side} />
-    </div>
-  );
-}
-
-function Wipe() {
-  const ref = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
-  const inView = useInView(ref, { margin: "-25% 0px -25% 0px", once: true });
-
-  const frac = useMotionValue(0.78); // start mostly-wet so the reveal sweeps gold IN
-  const sx = useSpring(frac, { stiffness: 160, damping: 26, mass: 0.4 });
-  const clip = useTransform(sx, (v) => `inset(0 ${100 - v * 100}% 0 0)`);
-  const left = useTransform(sx, (v) => `${v * 100}%`);
-
-  // entrance choreography: the blade sweeps to reveal the JDCO side
-  useEffect(() => {
-    if (inView) {
-      const a = animate(frac, 0.42, { duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.3 });
-      return () => a.stop();
-    }
-  }, [inView, frac]);
-
-  const setFromPointer = (clientX: number) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    frac.set(Math.min(0.93, Math.max(0.07, (clientX - r.left) / r.width)));
-  };
-
-  return (
-    <div
-      ref={ref}
-      className="relative mt-14 cursor-ew-resize touch-pan-y select-none overflow-hidden rounded-2xl border border-[var(--line-paper)] shadow-[0_40px_90px_-40px_rgba(0,0,0,0.45)]"
-      onPointerDown={(e) => {
-        dragging.current = true;
-        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-        setFromPointer(e.clientX);
-      }}
-      onPointerMove={(e) => dragging.current && setFromPointer(e.clientX)}
-      onPointerUp={() => (dragging.current = false)}
-      onPointerCancel={() => (dragging.current = false)}
+    <motion.div
+      initial={HAS_IO ? { opacity: 0, y: 30 } : false}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+      transition={{ duration: 0.7, ease: EASE, delay: 0.05 }}
+      className="group relative grid items-center gap-4 py-7 transition-colors duration-300 hover:bg-[#efebe1] md:grid-cols-[1fr_0.9fr_1.1fr_auto] md:gap-8 md:py-8"
     >
-      {/* base layer — the JDCO dark/gold world (revealed on the right) */}
-      <div className="relative bg-[#15140f]">
-        <div className="blueprint-grid-fine absolute inset-0 opacity-50" />
-        <div className="glow-ember pointer-events-none absolute right-[-12%] top-1/2 h-[120%] w-[55%] -translate-y-1/2 opacity-50" />
-        <PanelContent side="dry" />
+      {/* gold rule draws across the full row when it enters */}
+      <motion.span
+        initial={HAS_IO ? { scaleX: 0 } : false}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+        transition={{ duration: 1.1, ease: EASE, delay: 0.15 }}
+        className="absolute left-0 top-0 h-[2px] w-full origin-left bg-gradient-to-r from-[var(--color-ember)] via-[var(--color-ember)]/45 to-transparent"
+      />
+
+      {/* metric */}
+      <div>
+        <div className="mono text-[0.58rem] uppercase tracking-[0.22em] text-[#a39d8e]">
+          M-{String(i + 1).padStart(2, "0")}
+        </div>
+        <h3 className="display mt-1.5 text-[1.25rem] font-bold leading-tight text-ink md:text-[1.4rem]">
+          {r.metric}
+        </h3>
       </div>
 
-      {/* top layer — wet world, clipped to the left of the blade */}
-      <motion.div style={{ clipPath: clip }} className="absolute inset-0 bg-[#e9e5da]">
-        <div
-          className="absolute inset-0 opacity-60"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(-45deg, rgba(120,114,100,0.08) 0 14px, transparent 14px 28px)",
-          }}
-        />
-        <PanelContent side="wet" />
-      </motion.div>
-
-      {/* the blade */}
-      <motion.div style={{ left }} className="pointer-events-none absolute inset-y-0 z-10 w-0">
-        <div className="absolute inset-y-0 left-0 w-[2px] -translate-x-1/2 bg-ember shadow-[0_0_18px_rgba(251,204,14,0.65)]" />
-        <div className="absolute left-0 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-ember bg-[#131313] shadow-[0_0_30px_rgba(251,204,14,0.4)]">
-          <svg viewBox="0 0 24 24" className="h-5 w-5 text-ember" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M8 7l-5 5 5 5M16 7l5 5-5 5" />
-          </svg>
+      {/* traditional — always visible, deliberately quiet */}
+      <div className="flex items-start gap-3">
+        <svg viewBox="0 0 16 16" className="mt-1 h-3 w-3 shrink-0 text-[#b0aa9b]" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M4 4l8 8M12 4l-8 8" />
+        </svg>
+        <div>
+          <div className="mono text-[0.56rem] uppercase tracking-[0.2em] text-[#a39d8e]">
+            Traditional wet mix
+          </div>
+          <div className="mt-1 text-[0.98rem] font-light leading-snug text-mute-paper">
+            {r.traditional}
+          </div>
         </div>
-        <span className="mono absolute bottom-4 left-0 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#131313] px-3 py-1 text-[0.54rem] uppercase tracking-[0.2em] text-ember [animation:pulse-soft_2.2s_ease-in-out_infinite]">
-          ◀ Drag ▶
+      </div>
+
+      {/* JDCO — the loud one */}
+      <div className="flex items-start gap-3 rounded-xl border-l-2 border-ember bg-gradient-to-r from-ember/[0.09] to-transparent py-3 pl-4 pr-2">
+        <svg viewBox="0 0 16 16" className="mt-1 h-3.5 w-3.5 shrink-0 text-ember" fill="none" stroke="currentColor" strokeWidth="2.4">
+          <motion.path
+            d="M3 8.5l3.5 3.5L13 4"
+            initial={HAS_IO ? { pathLength: 0 } : false}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.45 }}
+          />
+        </svg>
+        <div>
+          <div className="mono text-[0.56rem] uppercase tracking-[0.2em] text-[#8a7c45]">
+            JDCO semi-dry
+          </div>
+          <div className="mt-1 text-[1.02rem] font-semibold leading-snug text-ink">
+            {r.jdco}
+          </div>
+        </div>
+      </div>
+
+      {/* verdict chip */}
+      <motion.div
+        initial={HAS_IO ? { opacity: 0, x: 18 } : false}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-10% 0px" }}
+        transition={{ duration: 0.6, ease: EASE, delay: 0.35 }}
+        className="justify-self-start md:justify-self-end"
+      >
+        <span className="mono inline-block whitespace-nowrap rounded-full bg-[#131313] px-4 py-2 text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-ember transition-transform duration-300 group-hover:-translate-y-0.5">
+          ◆ {VERDICT[i]}
         </span>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -195,16 +132,39 @@ export default function Technology() {
           tone="paper"
         />
 
-        <Wipe />
+        {/* datasheet header */}
+        <Reveal delay={0.08}>
+          <div className="mt-14 hidden items-center gap-8 border-b-2 border-ink/80 pb-3 md:grid md:grid-cols-[1fr_0.9fr_1.1fr_auto]">
+            <span className="mono text-[0.6rem] uppercase tracking-[0.24em] text-[#8d8779]">
+              Metric
+            </span>
+            <span className="mono text-[0.6rem] uppercase tracking-[0.24em] text-[#8d8779]">
+              Legacy method
+            </span>
+            <span className="mono pl-4 text-[0.6rem] font-semibold uppercase tracking-[0.24em] text-[#8a7c45]">
+              ◆ The JDCO standard
+            </span>
+            <span className="mono text-[0.6rem] uppercase tracking-[0.24em] text-[#8d8779]">
+              Verdict
+            </span>
+          </div>
+        </Reveal>
+
+        {/* rows */}
+        <div className="border-b border-[var(--line-paper)]">
+          {technology.rows.map((r, i) => (
+            <Row key={r.metric} r={r} i={i} />
+          ))}
+        </div>
 
         <Reveal delay={0.1}>
           <div className="mt-7 flex flex-wrap items-center justify-between gap-3">
             <p className="mono max-w-2xl text-[0.74rem] leading-relaxed text-mute-paper">
-              // Drag the blade. Zero-slump, end-pressed units leave the mold
-              structurally rigid — enabling immediate reuse and throughput that
-              wet-cast lines cannot match.
+              // Zero-slump, end-pressed units leave the mold structurally rigid
+              — enabling immediate reuse and throughput that wet-cast lines
+              cannot match.
             </p>
-            <span className="mono text-[0.62rem] uppercase tracking-[0.2em] text-ember">
+            <span className="mono text-[0.62rem] uppercase tracking-[0.2em] text-[#8a7c45]">
               5 / 5 metrics — semi-dry wins
             </span>
           </div>
