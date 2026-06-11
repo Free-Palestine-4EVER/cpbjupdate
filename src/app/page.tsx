@@ -17,8 +17,6 @@ import Impact from "@/components/Impact";
 import Partners from "@/components/Partners";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
-import QuoteModal from "@/components/QuoteModal";
-import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 export default function Home() {
   return (
@@ -42,8 +40,6 @@ export default function Home() {
       <Partners />
       <CTA />
       <Footer />
-      <QuoteModal />
-      <WhatsAppFloat />
     </main>
   );
 }

@@ -3,6 +3,8 @@ import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CursorGlow from "@/components/CursorGlow";
+import QuoteModal from "@/components/QuoteModal";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -55,6 +57,8 @@ document.addEventListener('click',function(e){var h=document.documentElement;if(
         />
         <CursorGlow />
         <SmoothScroll>{children}</SmoothScroll>
+        <QuoteModal />
+        <WhatsAppFloat />
       </body>
     </html>
   );

@@ -26,11 +26,11 @@ export const brand = {
 };
 
 export const nav = [
-  { label: "Capabilities", href: "#capabilities" },
-  { label: "Products", href: "#products" },
-  { label: "Technology", href: "#technology" },
-  { label: "Quality", href: "#quality" },
-  { label: "Projects", href: "#projects" },
+  { label: "Capabilities", href: "/capabilities" },
+  { label: "Products", href: "/products" },
+  { label: "Technology", href: "/technology" },
+  { label: "Quality", href: "/quality" },
+  { label: "Projects", href: "/projects" },
 ];
 
 export const heroStats = [
