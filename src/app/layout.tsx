@@ -45,7 +45,12 @@ export default function RootLayout({
       <body className="grain">
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=new URLSearchParams(location.search).get('theme');var t=p||localStorage.getItem('jdco-theme');if(t==='light')document.documentElement.classList.add('light');else document.documentElement.classList.remove('light');}catch(e){}})();`,
+            __html: `(function(){try{var p=new URLSearchParams(location.search).get('theme');var t=p||localStorage.getItem('jdco-theme');if(t==='light')document.documentElement.classList.add('light');else document.documentElement.classList.remove('light');}catch(e){}
+/* pre-hydration mobile menu: on slow networks the React bundle can take 10s+,
+   during which the hamburger would be a dead button. This zero-dependency
+   handler drives the menu via the .menu-open class until html.hydrated is set,
+   then permanently steps aside. */
+document.addEventListener('click',function(e){var h=document.documentElement;if(h.classList.contains('hydrated'))return;var t=e.target;if(!t||!t.closest)return;if(t.closest('[data-menu-btn]')){h.classList.toggle('menu-open');return;}if(t.closest('[data-mobile-panel] a'))h.classList.remove('menu-open');},true);})();`,
           }}
         />
         <CursorGlow />

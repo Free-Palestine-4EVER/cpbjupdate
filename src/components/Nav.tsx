@@ -23,6 +23,14 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // take over from the pre-hydration inline menu handler: adopt its state
+  // (user may have opened the menu before React arrived), then clear the class
+  useEffect(() => {
+    const h = document.documentElement;
+    if (h.classList.contains("menu-open")) setOpen(true);
+    h.classList.remove("menu-open");
+  }, []);
+
   return (
     <>
       {/* top scroll progress */}
@@ -78,8 +86,10 @@ export default function Nav() {
               <span className="sm:hidden">Quote</span>
               <span className="hidden sm:inline">Request a Quote</span>
             </a>
-            {/* mobile toggle */}
+            {/* mobile toggle — data-menu-btn lets the inline pre-hydration
+                script work this button before React loads */}
             <button
+              data-menu-btn
               onClick={() => setOpen((v) => !v)}
               aria-label="Menu"
               className="ml-1 flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-fg lg:hidden"
@@ -106,25 +116,29 @@ export default function Nav() {
         </motion.nav>
       </header>
 
-      {/* mobile panel */}
-      {open && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed inset-x-4 top-[84px] z-[64] rounded-2xl border border-[var(--line-strong)] bg-bg/95 p-3 backdrop-blur-xl lg:hidden"
-        >
-          {nav.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              className="mono block rounded-xl px-4 py-3 text-[0.8rem] uppercase tracking-[0.14em] text-mute hover:bg-white/5 hover:text-fg"
-            >
-              {item.label}
-            </a>
-          ))}
-        </motion.div>
-      )}
+      {/* mobile panel — ALWAYS in the DOM (the SSR HTML must contain it so
+          the pre-hydration handler can show it via html.menu-open). Plain
+          CSS transitions, no framer initial styles, so the no-JS failsafe
+          can't accidentally force it visible. */}
+      <div
+        data-mobile-panel
+        className={`fixed inset-x-4 top-[84px] z-[64] rounded-2xl border border-[var(--line-strong)] bg-bg/95 p-3 backdrop-blur-xl transition-all duration-300 ease-out lg:hidden ${
+          open
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
+        }`}
+      >
+        {nav.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            onClick={() => setOpen(false)}
+            className="mono block rounded-xl px-4 py-3 text-[0.8rem] uppercase tracking-[0.14em] text-mute hover:bg-white/5 hover:text-fg"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
     </>
   );
 }

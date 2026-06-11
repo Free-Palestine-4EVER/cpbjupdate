@@ -125,6 +125,14 @@ html:not(.hydrated) [style$="opacity: 0"] {
   clip-path: none !important;
 }
 
+/* pre-hydration mobile menu: the inline <script> in layout toggles
+   .menu-open on <html> while React hasn't loaded yet */
+html.menu-open [data-mobile-panel] {
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
 * { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 /* clip (not hidden) keeps position:sticky working while killing any sideways
    leak from wide decorative elements (marquee, oversized motifs) on mobile. */
